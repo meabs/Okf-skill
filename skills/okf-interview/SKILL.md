@@ -7,6 +7,15 @@ description: Analyse a codebase, interview engineers about gaps and unclear beha
 
 Produce a navigable, source-attributed knowledge bundle containing complete answers, not interview minutes or unfinished drafts. A reader should understand when a fact applies, why it matters, and how it should affect a decision or action without reading the conversation. Keep anything needing clarification in a separate review log outside the consumable bundle. Use OKF v0.3; read [references/okf-authoring.md](references/okf-authoring.md) before writing files.
 
+## Workflow at a glance
+
+1. Analyse the code; record its revision; list evidence-backed questions.
+2. Interview in small rounds; follow up; accept "unknown".
+3. Apply the completeness gate to every proposed concept; unanswered material goes to the review log, not the bundle.
+4. Scaffold each concept with `new_concept.py`, write the body, and link it from its index.
+5. Run `validate.py --strict`, `check_links.py` and `check_content.py --log`; fix everything they report.
+6. Re-read each concept as a consumer; report paths, review-item IDs and check results. The sections below give the detail.
+
 ## Analyse the code before interviewing
 
 Identify the system, audience, engineer's area of experience, and bundle destination. Reuse the existing bundle's organization and terminology. If no destination exists, propose a `knowledge/` directory inside the chosen project. Do not install this skill, publish files, or contact engineers as a side effect.

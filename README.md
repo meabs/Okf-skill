@@ -99,6 +99,8 @@ Replace the example path with your own bundle to validate generated knowledge. T
 
 ## Testing and limitations
 
+`python3 -I tests/selftest.py` checks the helper scripts against the example and seeded faults (it runs in CI).
+
 The included example was produced by a fresh agent using the skill while another agent acted as a fictional engineer. The interviewer inspected a synthetic Python caller and a pinned Requests checkout, conducted two question rounds, and produced four concepts with seven unresolved review items.
 
 The test exposed unresolved commentary leaking into otherwise complete concepts. The skill was tightened with a sentence-level completeness check, and the output was revised and revalidated. The final bundle passed strict upstream validation. This was one scenario test, not a benchmark or a real engineer interview. See [the example notes](examples/README.md) and retained [interview evidence](examples/invoice-import/evidence/interview.md).
