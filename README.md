@@ -95,7 +95,7 @@ python3 -m venv .venv
   examples/invoice-import/knowledge --strict --json
 ```
 
-Replace the example path with your own bundle to validate generated knowledge. Strict mode fails on errors or warnings. Format validation does not establish factual accuracy, answer completeness, or operational safety; those require evidence and content review.
+Replace the example path with your own bundle to validate generated knowledge. Then run `python3 -I skills/okf-interview/scripts/check_links.py <bundle>` to catch dangling links and concepts missing from their index, which the upstream validator does not check. Strict mode fails on errors or warnings. Format validation does not establish factual accuracy, answer completeness, or operational safety; those require evidence and content review.
 
 ## Testing and limitations
 
@@ -112,6 +112,8 @@ The skill can only capture knowledge supported by accessible code, documentation
 | [`skills/okf-interview/SKILL.md`](skills/okf-interview/SKILL.md) | Agent instructions and completeness policy |
 | [`skills/okf-interview/references/`](skills/okf-interview/references/) | Interview prompts, OKF authoring guidance, and upstream license |
 | [`skills/okf-interview/scripts/validate.py`](skills/okf-interview/scripts/validate.py) | Unmodified upstream OKF validator |
+| [`skills/okf-interview/scripts/check_links.py`](skills/okf-interview/scripts/check_links.py) | Navigation check: broken links, orphan concepts, missing indexes (standard library only) |
+| [`skills/okf-interview/scripts/new_concept.py`](skills/okf-interview/scripts/new_concept.py) | Scaffold a concept with correct frontmatter and footnotes |
 | [`examples/invoice-import/`](examples/invoice-import/) | Synthetic caller, generated knowledge, separate review log, and evidence |
 
 ## License and attribution
