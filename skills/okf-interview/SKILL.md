@@ -75,7 +75,7 @@ Do not copy the raw Q&A into concept bodies. Record only the minimum source mate
 
 Show the complete curated propositions and intended concept paths for correction, separately from review-log items. The capture request authorizes writing complete local answers and the review log. Engineer answers alone do not verify the final document. Record `verified` only after a real reviewer has confirmed that exact content, supplied their identity, and asked for that verification to be recorded.
 
-To avoid frontmatter and footnote slips, start each concept with `python3 -I <skill-directory>/scripts/new_concept.py <bundle>/<dir>/<name>.md --type ... --title ... --description ... --interview ... --code ... --by ...` (add `--synthetic` for a simulated engineer); it fills the real timestamp, `status: draft` and matching sources, and you replace the placeholder body. After writing, re-read each factual sentence against the code or the engineer's answer and fix lists that are shorter or longer than the evidence.
+To avoid frontmatter and footnote slips, start each concept with `python3 -I <skill-directory>/scripts/new_concept.py <bundle>/<dir>/<name>.md --type ... --title ... --description ... --interview ... --code ... --by ...` (add `--synthetic` for a simulated engineer); it fills the real timestamp, `status: draft` and matching sources, and you replace the placeholder body (add `--index-note "one line"` to link it from the directory index). After writing, re-read each factual sentence against the code or the engineer's answer and fix lists that are shorter or longer than the evidence.
 
 Generate one complete concept per Markdown file, root and directory indexes, and a change log as described in the authoring reference. Attribute interview claims separately from source-code facts. Keep complete but synthetic or unreviewed answers `status: draft`; withhold incomplete or disputed answers in the review log. Passing validation is not evidence of completeness.
 
@@ -93,6 +93,12 @@ Then run the navigation check, which the validator does not cover (dangling link
 python3 -I <skill-directory>/scripts/check_links.py <bundle-root>
 ```
 
-Fix errors and address warnings in both. If PyYAML is unavailable, use an isolated environment; do not silently install packages globally. If validation cannot run, disclose that and check the authoring reference manually. The validator checks format, frontmatter and footnote/source matching, not truth, external URLs, completeness, or that indexes link every concept (use `check_links.py` for that).
+Then run the content check, which catches leftover placeholders, undefined or unused footnotes, raw Q/A dialogue, review-item IDs that are not in the log, and likely interview-gap phrases:
+
+```sh
+python3 -I <skill-directory>/scripts/check_content.py <bundle-root> --log <review-log-file>
+```
+
+Fix errors and address warnings in all three. A passing check does not show that content is true or complete. If PyYAML is unavailable, use an isolated environment; do not silently install packages globally. If validation cannot run, disclose that and check the authoring reference manually. The validator checks format, frontmatter and footnote/source matching, not truth, external URLs, completeness, or that indexes link every concept (use `check_links.py` for that).
 
 Before delivery, read each concept as a consumer and reapply the completeness gate. Does it answer its question without requiring clarification? Does it add information beyond source code? Are scope, evidence, and action boundaries clear? Is FMEA limited to topics that benefit from it? Report code areas analysed, concept paths, representative excerpts, the review-log path and open item IDs, and validation results. Never describe a self-authored role-play as independent evidence of skill effectiveness.
