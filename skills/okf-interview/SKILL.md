@@ -57,6 +57,8 @@ Completeness is relative to the stated question, not exhaustive knowledge of the
 
 Check every sentence, not only the concept's central answer. Remove interview-gap commentary such as “its deduplication effect is not established” or “the procedure was not supplied” from otherwise complete concepts and retain it in the review log. Keep established scope boundaries and observed code behaviour. A complete business rule can legitimately classify an operational outcome as `unknown`; that is different from an unanswered interview question.
 
+A complete answer may still have a known limit on how far a consumer can rely on it (for example, a measurement was never taken, or a check's recall is unknown). State that limit in one scoped sentence at the end of the concept, beginning "Limit:", and cite the review-log item ID (for example, "see review item R01"). This is not interview-gap commentary: it tells the reader how far to trust the answer and does not leave the central question open. Put the detail and the clarification request in the log.
+
 Do not create placeholder concepts, TODO sections, open-question lists, or links to concepts withheld for clarification. If no answer meets the gate, create the review log and explain that no consumable OKF answers were produced. Do not invent answers to fill the bundle.
 
 ## Maintain the engineer review log
@@ -73,7 +75,9 @@ Do not copy the raw Q&A into concept bodies. Record only the minimum source mate
 
 Show the complete curated propositions and intended concept paths for correction, separately from review-log items. The capture request authorizes writing complete local answers and the review log. Engineer answers alone do not verify the final document. Record `verified` only after a real reviewer has confirmed that exact content, supplied their identity, and asked for that verification to be recorded.
 
-Generate one complete concept per Markdown file, root and directory indexes, and a change log as described in the authoring reference. Attribute interview claims separately from source-code facts. Keep complete but synthetic or unreviewed answers `status: draft`; withhold incomplete or disputed answers in the review log. Never treat a passing format validator as evidence of completeness.
+To avoid frontmatter and footnote slips, start each concept with `python3 -I <skill-directory>/scripts/new_concept.py <bundle>/<dir>/<name>.md --type ... --title ... --description ... --interview ... --code ... --by ...` (add `--synthetic` for a simulated engineer); it fills the real timestamp, `status: draft` and matching sources, and you replace the placeholder body. After writing, re-read each factual sentence against the code or the engineer's answer and fix lists that are shorter or longer than the evidence.
+
+Generate one complete concept per Markdown file, root and directory indexes, and a change log as described in the authoring reference. Attribute interview claims separately from source-code facts. Keep complete but synthetic or unreviewed answers `status: draft`; withhold incomplete or disputed answers in the review log. Passing validation is not evidence of completeness.
 
 When updating, keep stable IDs, unknown metadata, unrelated prose, and previous verification events. Change only supported claims. Update generation time for meaning changes and tell the user that previous verification may now be out of date. Retire resolved issues or superseded decisions explicitly rather than silently deleting their history. Ask for the issue's disposition if “resolved” could mean fixed, mitigated, or no longer applicable.
 
@@ -83,6 +87,12 @@ Run the included upstream validator with Python 3.9+ and PyYAML:
 python3 -I <skill-directory>/scripts/validate.py <bundle-root> --strict --json
 ```
 
-Fix errors and address warnings. If PyYAML is unavailable, use an isolated environment; do not silently install packages globally. If validation cannot run, disclose that and check the authoring reference manually. The validator checks format and local links, not truth, external URLs, or completeness of knowledge.
+Then run the navigation check, which the validator does not cover (dangling links, concepts missing from their directory index, directories without an index):
+
+```sh
+python3 -I <skill-directory>/scripts/check_links.py <bundle-root>
+```
+
+Fix errors and address warnings in both. If PyYAML is unavailable, use an isolated environment; do not silently install packages globally. If validation cannot run, disclose that and check the authoring reference manually. The validator checks format, frontmatter and footnote/source matching, not truth, external URLs, completeness, or that indexes link every concept (use `check_links.py` for that).
 
 Before delivery, read each concept as a consumer and reapply the completeness gate. Does it answer its question without requiring clarification? Does it add information beyond source code? Are scope, evidence, and action boundaries clear? Is FMEA limited to topics that benefit from it? Report code areas analysed, concept paths, representative excerpts, the review-log path and open item IDs, and validation results. Never describe a self-authored role-play as independent evidence of skill effectiveness.
