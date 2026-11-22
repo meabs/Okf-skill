@@ -31,6 +31,7 @@ def main():
     a.add_argument("--tag", action="append", default=[])
     a.add_argument("--synthetic", action="store_true", help="label as synthetic scenario knowledge")
     a.add_argument("--force", action="store_true")
+    a.add_argument("--index-note", help="also append a link to the directory index.md with this one-line description")
     a = a.parse_args()
     p = Path(a.path)
     if p.suffix != ".md" or p.name in ("index.md", "log.md"):
@@ -52,6 +53,11 @@ def main():
              "[^engineer]: <Interview topic and date>", "[^code]: <Code evidence>", ""]
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text("\n".join(fm + body), encoding="utf-8")
+    if a.index_note:
+        idx = p.parent / "index.md"
+        head = "" if idx.exists() else "# " + p.parent.name.replace("-", " ").title() + "\n\n"
+        with idx.open("a", encoding="utf-8") as f:
+            f.write(head + f"- [{a.title}]({p.name}): {a.index_note}\n")
     print(f"wrote {p}; replace the placeholder body, add it to the directory index.md, then run check_links.py and validate.py")
 
 
