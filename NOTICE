@@ -1,0 +1,14 @@
+OKF Engineer Interview
+
+This distribution includes scripts/validate.py from the upstream
+Open Knowledge Format project, installed here under
+skills/okf-interview/scripts/validate.py.
+
+Upstream repository: https://github.com/open-knowledge-format/open-knowledge-format
+Upstream revision: 527e81aff55992be21507e97004286789126f88c
+Copyright 2026 Google LLC
+License: Apache License, Version 2.0
+
+The validator is redistributed without modifications. Its original copyright
+and license notices are retained in the file. The accompanying upstream license
+is also included at skills/okf-interview/references/OKF-LICENSE.txt.
