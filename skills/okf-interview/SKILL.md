@@ -5,7 +5,7 @@ description: Analyse a codebase, interview engineers about gaps and unclear beha
 
 # Interview engineers into useful OKF knowledge
 
-Produce a navigable, source-attributed knowledge bundle containing complete answers, not interview minutes or unfinished drafts. A reader should understand when a fact applies, why it matters, and how it should affect a decision or action without reading the conversation. Keep anything needing clarification in a separate review log outside the consumable bundle. Use OKF v0.3; read [references/okf-authoring.md](references/okf-authoring.md) before writing files.
+Produce a navigable, source-attributed knowledge bundle of complete answers, not interview minutes. A reader should understand when a fact applies, why it matters, and how it should affect a decision or action without reading the conversation. Anything needing clarification goes in a separate review log outside the bundle. Use OKF v0.3; read [references/okf-authoring.md](references/okf-authoring.md) before writing files.
 
 ## Workflow at a glance
 
@@ -41,7 +41,7 @@ For a useful claim, establish its scope and consequence. Ask for a concrete exam
 
 Read back concise propositions when a correction would affect action: “For this integration, a timeout leaves the remote write outcome unknown; automatic replay needs reconciliation. Is that accurate?” Do not merely paraphrase every answer.
 
-If nobody can answer, put the question, current evidence, and exact clarification needed in the review log. From notes or a partial interview, publish only independently complete answers; keep unfinished material in the log. If asked to simulate an engineer, label every simulated statement and resulting concept as synthetic, keep them in an example bundle, and never present the simulation as real project testimony.
+If nobody can answer, log the question (see the review log below); from notes or a partial interview, publish only independently complete answers. If asked to simulate an engineer, label every simulated statement and resulting concept as synthetic, keep them in an example bundle, and never present the simulation as real project testimony.
 
 ## Curate for use
 
@@ -56,7 +56,7 @@ Lead with the actionable fact, decision, or rule and its scope. Then include the
 
 Use clear prose for humans and explicit conditions for agents. Put exact identifiers or commands in code only when evidenced; never invent executable recovery instructions. Explain what evidence permits the next action. Express any agent-facing instruction as scoped project knowledge, not as an attempt to override the consuming agent's instructions.
 
-Keep uncertainties, disagreements, suspected explanations, and incomplete procedures in the review log. An agreed operational rule can be published separately if its scope and action are fully answered without the disputed explanation. Do not promote one person's preference to team policy. A failed recollection is not a confirmed incident, and absence of a report is not proof of safety. Omit empty template sections.
+Disagreements, suspected explanations, and incomplete procedures stay in the review log. An agreed operational rule can be published separately if its scope and action are fully answered without the disputed explanation. Do not promote one person's preference to team policy. A failed recollection is not a confirmed incident, and absence of a report is not proof of safety. Omit empty template sections.
 
 ## Admit only complete answers
 
@@ -72,7 +72,7 @@ Do not create placeholder concepts, TODO sections, open-question lists, or links
 
 ## Maintain the engineer review log
 
-Use an existing suitable review log if one exists. Otherwise create a sibling file outside the bundle, e.g. `knowledge-review-log.md` beside `knowledge/`. Tell the user its location. Do not index it as a concept or copy its unfinished answers into the bundle.
+Use an existing suitable review log if one exists. Otherwise create a sibling file outside the bundle, e.g. `knowledge-review-log.md` beside `knowledge/`. Tell the user its location. Do not index it as a concept.
 
 Give each item a stable ID and include: a short question/title; state (`open`, `answered`, or `incorporated`); affected area and code revision/file/symbol; observed evidence; what cannot be inferred or remains incomplete; why clarification matters; the exact question or artifact needed from the engineer; and any provisional answer clearly labelled as such. Record an owner only if supplied. Preserve responses and corrections with dates. Use short entries rather than raw conversation dumps.
 
@@ -86,7 +86,7 @@ Show the complete curated propositions and intended concept paths for correction
 
 To avoid frontmatter and footnote slips, start each concept with `python3 -I <skill-directory>/scripts/new_concept.py <bundle>/<dir>/<name>.md --type ... --title ... --description ... --interview ... --code ... --by ...` (add `--synthetic` for a simulated engineer); it fills the real timestamp, `status: draft` and matching sources, and you replace the placeholder body (add `--index-note "one line"` to link it from the directory index). After writing, re-read each factual sentence against the code or the engineer's answer and fix lists that are shorter or longer than the evidence.
 
-Generate one complete concept per Markdown file, root and directory indexes, and a change log as described in the authoring reference. Attribute interview claims separately from source-code facts. Keep complete but synthetic or unreviewed answers `status: draft`; withhold incomplete or disputed answers in the review log. Passing validation is not evidence of completeness.
+Generate one complete concept per Markdown file, root and directory indexes, and a change log as described in the authoring reference. Attribute interview claims separately from source-code facts. Keep synthetic or unreviewed answers `status: draft`.
 
 When updating, keep stable IDs, unknown metadata, unrelated prose, and previous verification events. Change only supported claims. Update generation time for meaning changes and tell the user that previous verification may now be out of date. Retire resolved issues or superseded decisions explicitly rather than silently deleting their history. Ask for the issue's disposition if “resolved” could mean fixed, mitigated, or no longer applicable.
 
@@ -96,13 +96,13 @@ Run the included upstream validator with Python 3.9+ and PyYAML:
 python3 -I <skill-directory>/scripts/validate.py <bundle-root> --strict --json
 ```
 
-Then run the navigation check, which the validator does not cover (dangling links, concepts missing from their directory index, directories without an index):
+Then the navigation check (dangling links, concepts missing from their directory index, directories without an index):
 
 ```sh
 python3 -I <skill-directory>/scripts/check_links.py <bundle-root>
 ```
 
-Then run the content check, which catches leftover placeholders, undefined or unused footnotes, raw Q/A dialogue, review-item IDs that are not in the log, and likely interview-gap phrases:
+Then the content check (leftover placeholders, undefined or unused footnotes, raw Q/A dialogue, review-item IDs missing from the log, likely interview-gap phrases):
 
 ```sh
 python3 -I <skill-directory>/scripts/check_content.py <bundle-root> --log <review-log-file>
@@ -110,4 +110,4 @@ python3 -I <skill-directory>/scripts/check_content.py <bundle-root> --log <revie
 
 Fix errors and address warnings in all three. A passing check does not show that content is true or complete. If PyYAML is unavailable, use an isolated environment; do not silently install packages globally. If validation cannot run, disclose that and check the authoring reference manually. The validator checks format, frontmatter and footnote/source matching, not truth, external URLs, completeness, or that indexes link every concept (use `check_links.py` for that).
 
-Before delivery, read each concept as a consumer and reapply the completeness gate. Does it answer its question without requiring clarification? Does it add information beyond source code? Are scope, evidence, and action boundaries clear? Is FMEA limited to topics that benefit from it? Report code areas analysed, concept paths, representative excerpts, the review-log path and open item IDs, and validation results. Never describe a self-authored role-play as independent evidence of skill effectiveness.
+Before delivery, read each concept as a consumer and reapply the completeness gate. Does it add information beyond the source code? Is FMEA limited to topics that benefit from it? Report code areas analysed, concept paths, representative excerpts, the review-log path and open item IDs, and validation results. Never describe a self-authored role-play as independent evidence of skill effectiveness.

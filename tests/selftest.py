@@ -75,6 +75,14 @@ with tempfile.TemporaryDirectory() as td:
     f.write_text(f.read_text().replace("K09", "K02"))
     check("check_content accepts a known review item", run(SC / "check_content.py", d, "--log", log).returncode == 0)
 
+    d = fresh(tmp, "gap")
+    f = d / "contracts/submission-meaning.md"
+    f.write_text(f.read_text() + "\nThe procedure was not supplied.\n")
+    check("check_content warns on bare gap phrase", "interview-gap" in run(SC / "check_content.py", d).stdout)
+    f.write_text(f.read_text().replace("The procedure was not supplied.", 'A rule, for example "was not supplied" or `not established`.\n\nLimit: recall is not established; see review item K02.'))
+    r = run(SC / "check_content.py", d, "--log", log)
+    check("check_content ignores quoted phrases and Limit paragraphs", "interview-gap" not in r.stdout and r.returncode == 0)
+
     d = tmp / "scaffold"
     r = run(SC / "new_concept.py", d / "decisions/x.md", "--type", "Decision", "--title", 'A "quoted" title', "--description", "d",
             "--interview", "Interview about x on 2026-01-01; no recording retained", "--code", "Repo at commit abc1234, file y",

@@ -6,7 +6,8 @@ Errors (exit 1):
   - a footnote reference with no definition, or a definition never referenced;
   - raw interview dialogue lines (Q:/A: style) in a concept body;
   - with --log FILE: a review item ID cited in a concept (R01, K03, ...) that is not a heading/ID in the log.
-Warnings (printed, exit 0): phrases that usually mean interview-gap commentary leaked into a concept.
+Warnings (printed, exit 0): phrases that usually mean interview-gap commentary leaked into a concept
+(ignored inside quotation marks, backticks and a paragraph that starts with 'Limit:').
 Passing does not show the content is true or complete.  Standard library only.
 Usage: python3 -I check_content.py <bundle-root> [--log knowledge-review-log.md]
 """
@@ -49,9 +50,10 @@ def main(root, log):
                 for i in ID.findall(m.group(1).upper()):
                     if i not in ids:
                         errs.append(f"{rel}: cites review item {i}, not found in {log.name}")
-        for m in GAP.finditer(prose):
-            if not prose[max(0, m.start() - 20):m.start()].lower().endswith("limit: "):
-                warns.append(f"{rel}: possible interview-gap commentary: \"{m.group(0)}\" (move to the review log, or keep only as a scoped 'Limit:' sentence)")
+        scan = re.sub(r"(?m)^Limit:.*(?:\n(?!\n).*)*", "", prose)      # a scoped Limit paragraph is the sanctioned place
+        scan = re.sub(r"`[^`]*`|\"[^\"]*\"|\u201c[^\u201d]*\u201d", "", scan)  # phrases quoted as examples are not commentary
+        for m in GAP.finditer(scan):
+            warns.append(f"{rel}: possible interview-gap commentary: \"{m.group(0)}\" (move to the review log, or keep only as a scoped 'Limit:' sentence)")
     for w in warns:
         print("warning:", w)
     for e in errs:
