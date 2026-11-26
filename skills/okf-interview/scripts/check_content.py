@@ -17,7 +17,7 @@ from pathlib import Path
 
 PLACEHOLDER = re.compile(r"<Lead with|<Interview topic|<Code evidence|<Specific decision|\bTODO\b|\bTBD\b|\bFIXME\b")
 DIALOGUE = re.compile(r"^\s*(?:Q\d*|A\d*|Engineer|Interviewer)\s*[:)]", re.M)
-GAP = re.compile(r"not established|was not supplied|were not supplied|to be confirmed|needs? clarification|unanswered|open question|not yet known", re.I)
+GAP = re.compile(r"not established|was not supplied|were not supplied|to be confirmed|needs? clarification|unanswered|open question|not yet known|unconfirmed|no approved|not provided|unknown from", re.I)
 ITEM = re.compile(r"review items?\s+([A-Z]\d{2,3}(?:\s*(?:,|and)\s*[A-Z]\d{2,3})*)", re.I)
 ID = re.compile(r"[A-Z]\d{2,3}")
 
@@ -42,7 +42,7 @@ def main(root, log):
         for r in sorted(refs - defs):
             errs.append(f"{rel}: footnote [^{r}] is used but not defined")
         for r in sorted(defs - refs):
-            errs.append(f"{rel}: footnote [^{r}] is defined but never used")
+            warns.append(f"{rel}: footnote [^{r}] is defined but never used (the OKF spec allows it; the skill prefers every definition cited)")
         if DIALOGUE.search(prose):
             errs.append(f"{rel}: raw interview dialogue in concept body (keep it in evidence outside the bundle)")
         if ids is not None:
