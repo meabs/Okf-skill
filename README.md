@@ -40,6 +40,10 @@ The skill uses the coding agent you already have. It does not require the upstre
 5. **Maintain the review log.** Retain open questions, code evidence, provisional answers, and the exact clarification needed outside the consumable bundle. Incorporate answers only after they are complete, preserving the review history.
 6. **Validate the bundle.** Run the included upstream validator and read the resulting concepts as a consumer.
 
+## Reading a bundle afterwards
+
+This skill writes bundles; it does not read them. To answer questions from one with trust tier, status and staleness reported for each concept, use the upstream [`okf-consume`](https://github.com/open-knowledge-format/open-knowledge-format/tree/527e81aff55992be21507e97004286789126f88c/skills/okf-consume) skill.
+
 ## Output
 
 ```text
